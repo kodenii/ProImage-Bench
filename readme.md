@@ -187,4 +187,4 @@ If you find **ProImage-Bench** useful in your research, please consider citing o
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the MIT License.
