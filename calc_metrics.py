@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 import json
 from pathlib import Path
 import argparse
@@ -10,9 +9,6 @@ def get_base_task_id(task_id: str) -> str:
 
     return re.sub(r"_general$", "", task_id)
 
-
-
-
 def compute_total_metrics(results_dir="./results", mode="all"):
     prefix_map = {
         "bio": "bio_",
@@ -21,15 +17,15 @@ def compute_total_metrics(results_dir="./results", mode="all"):
         "all": None,
     }
     if mode not in prefix_map:
-        raise ValueError(f"未知模式: {mode}")
+        raise ValueError(f"Unknown mode: {mode}")
 
     prefix = prefix_map[mode]
 
     results_path = Path(results_dir) / "results.json"
     if not results_path.exists():
-        raise FileNotFoundError(f"未找到结果文件：{results_path}")
+        raise FileNotFoundError(f"Result file not found: {results_path}")
 
-    # ========== 1️⃣ 读取 results.json ==========
+
     with results_path.open("r", encoding="utf-8") as f:
         data = json.load(f)
         if isinstance(data, dict) and "results" in data:
@@ -39,13 +35,11 @@ def compute_total_metrics(results_dir="./results", mode="all"):
         else:
             all_entries = [data]
 
-    # ========== 2️⃣ 按 base_task 聚合 rubrics ==========
     merged_tasks = {}
 
     for entry in all_entries:
         task_id = entry.get("task_id", "")
 
-        # 过滤 domain
         if prefix is not None and not task_id.startswith(prefix):
             continue
 
@@ -56,7 +50,7 @@ def compute_total_metrics(results_dir="./results", mode="all"):
 
         merged_tasks[base_id]["rubrics"].extend(entry.get("rubrics", []))
 
-    # ========== 3️⃣ 计算指标 ==========
+    # Compute metrics
     total_rubric_count = 0
     total_rubric_ones = 0
     criteria_score_sum = 0.0
@@ -100,12 +94,12 @@ def parse_args(argv=None):
     parser.add_argument(
         "mode",
         choices=["bio", "engineering", "general", "all"],
-        help="统计范围"
+        help="Scope of statistics"
     )
     parser.add_argument(
         "--results_dir",
         default="./results",
-        help="结果文件目录"
+        help="Results directory"
     )
     return parser.parse_args(argv)
 
@@ -119,7 +113,7 @@ if __name__ == "__main__":
             mode=args.mode
         )
     except Exception as e:
-        print(f"计算出错: {e}", file=sys.stderr)
+        print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
 
     print(json.dumps(results, ensure_ascii=False, indent=2))

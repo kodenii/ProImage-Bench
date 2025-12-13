@@ -3,7 +3,6 @@ from typing import Callable
 from typing import Optional
 import requests
 from utils import RateLimitError,BadRequestError,GeneralAPIError,get_model_params,image_to_data_url
-
 # Send a multimodal (text + image) request to Azure OpenAI
 MAX_RETRIES = 5
 def chat_with_image(
@@ -23,42 +22,42 @@ def chat_with_image(
 
         except RateLimitError as e:
             if attempt < MAX_RETRIES:
-                print(f"️ 触发RateLimitError:,sleep {60*attempt}s", e)
+                print(f"️RateLimitError triggered: sleeping for {60*attempt}s", e)
                 time.sleep(60*attempt)
             else:
                 raise
         except BadRequestError as e:
-            print(" 重试失败次数达到上限，停止执行")
+            print("Maximum retry attempts reached. Stopping execution.")
             raise
         except GeneralAPIError as e:
             if attempt < MAX_RETRIES:
-                print(f"️ 触发GeneralAPIError:,sleep 10s", e)
+                print(f"GeneralAPIError triggered: sleeping for 10s", e)
                 time.sleep(10)
             else:
                 raise
         except requests.exceptions.Timeout as e:
             if attempt < MAX_RETRIES:
-                print(f"️ 触发超时requests.exceptions.Timeout:,sleep {2 ** (attempt - 1)}s", e)
+                print(f"️ requests.exceptions.Timeout triggered: sleeping for {2 ** (attempt - 1)}s", e)
                 time.sleep(2 ** (attempt - 1))
             else:
                 raise
         except requests.exceptions.RequestException as e:
             if attempt < MAX_RETRIES:
-                print(f"️ 触发requests.exceptions.RequestException:,sleep 10s", e)
+                print(f"requests.exceptions.RequestException triggered: sleeping for 10s", e)
                 time.sleep(10)
             else:
                 raise
 
         except ValueError as e:
             if attempt < MAX_RETRIES:
-                print(f"️ 第 {attempt} 次模型响应解析失败:", e)
-                print("原始 response:", response)
+                print(f"️Attempt {attempt}: model response parsing failed", e)
+                print("Response:", response)
             else:
-                print(" 重试失败次数达到上限，停止执行")
+                print("Maximum retry attempts reached. Stopping execution.")
                 raise
 
         except Exception as e:
-            print(f"️ 发生错误", e)
+            print(f"️Error", e)
             raise
 
 def chat_with_image_request(
@@ -71,10 +70,6 @@ def chat_with_image_request(
         timeout: int = 60
 
 ) -> Optional[str]:
-    """
-    向 OpenAI API 发送图像和文本请求，仅返回响应结果。
-    使用 requests 发送请求，替代原本的 OpenAI client 方式。
-    """
     api_key, azure_endpoint, deployment_name = get_model_params(model_type)
 
     if not image_list:
@@ -111,19 +106,19 @@ def chat_with_image_request(
         response = requests.post(url, headers=headers, json=payload, timeout=timeout+240)
 
         if response.status_code == 429:
-            raise RateLimitError("请求次数超出限制，请稍后再试。")
+            raise RateLimitError("Request limit exceeded. Please try again later.")
         elif response.status_code == 400:
-            raise BadRequestError("请求无效，可能是参数错误。")
+            raise BadRequestError("Invalid request. The parameters may be incorrect.")
         elif response.status_code == 200:
             result = response.json()
             return result['choices'][0]['message']['content']
         else:
-            raise GeneralAPIError(f"API 请求失败，状态码: {response.status_code}，错误信息: {response.text}")
+            raise GeneralAPIError(f"API request failed with status code: {response.status_code}, error message: {response.text}")
     except requests.exceptions.Timeout as e:
-        raise e  # 捕获超时异常并抛出自定义异常
+        raise e
 
     except requests.exceptions.RequestException as e:
-        raise e  # 捕获并重新抛出请求异常
+        raise e
 
 
 if __name__ == "__main__":
