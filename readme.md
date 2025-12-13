@@ -178,7 +178,7 @@ If you find **ProImage-Bench** useful in your research, please consider citing o
 
 ```bibtex
 @article{ni2025proimagebench,
-  title={ProImage-Bench: Rubric‑Based Evaluation for Professional Image Generation},
+  title={ProImage-Bench: Rubric-Based Evaluation for Professional Image Generation},
   author={Minheng Ni, Zhengyuan Yang, Yaowen Zhang, Linjie Li, Chung-Ching Lin, Kevin Lin, Zhendong Wang, Xiaofei Wang, Shujie Liu, Lei Zhang, Wangmeng Zuo, Lijuan Wang},
   journal={arXiv preprint arXiv:2512.*****},
   year={2025}
