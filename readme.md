@@ -3,7 +3,7 @@
 
 <div align="center">
 
-[![arXiv](https://img.shields.io/badge/arXiv-Paper-b31b1b.svg)]() [![Project Page](https://img.shields.io/badge/Project-Website-blue)](https://kodenii.github.io/ProImage-Bench-web/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://choosealicense.com/licenses/mit/)
+[![arXiv](https://img.shields.io/badge/arXiv-Paper-b31b1b.svg)](https://arxiv.org/abs/2512.12220) [![Project Page](https://img.shields.io/badge/Project-Website-blue)](https://kodenii.github.io/ProImage-Bench-web/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://choosealicense.com/licenses/mit/)
 
 </div>
 
