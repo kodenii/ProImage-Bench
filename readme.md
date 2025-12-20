@@ -177,10 +177,10 @@ python calc_metrics.py all
 If you find **ProImage-Bench** useful in your research, please consider citing our paper:
 
 ```bibtex
-@article{ni2025proimagebench,
+@article{ni2025proimage,
   title={ProImage-Bench: Rubric-Based Evaluation for Professional Image Generation},
-  author={Minheng Ni, Zhengyuan Yang, Yaowen Zhang, Linjie Li, Chung-Ching Lin, Kevin Lin, Zhendong Wang, Xiaofei Wang, Shujie Liu, Lei Zhang, Wangmeng Zuo, Lijuan Wang},
-  journal={arXiv preprint arXiv:2512.*****},
+  author={Ni, Minheng and Yang, Zhengyuan and Zhang, Yaowen and Li, Linjie and Lin, Chung-Ching and Lin, Kevin and Wang, Zhendong and Wang, Xiaofei and Liu, Shujie and Zhang, Lei and others},
+  journal={arXiv preprint arXiv:2512.12220},
   year={2025}
 }
 ```
